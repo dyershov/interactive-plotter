@@ -16,6 +16,10 @@ class InteractiveFigure:
         import matplotlib.pyplot as plt
         plt.close(self.__fig)
 
+    @property
+    def figure(self):
+        return self.__fig
+
     def __draw(self, event=None):
         if event is not None and event.canvas != self.__fig.canvas:
                 raise RuntimeError

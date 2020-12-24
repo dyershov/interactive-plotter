@@ -70,6 +70,11 @@ class InteractiveAxes:
             return
         self.__add_foreground_artist(interactive_artist)
 
+    def remove_artist(self, interactive_artist):
+        self.__background_artists.discard(interactive_artist)
+        self.__foreground_artists.discard(interactive_artist)
+        interactive_artist.artist.remove()
+
     def __add_foreground_artist(self, artist):
         self.__foreground_artists.add(artist)
         artist.artist.set_animated(True)
