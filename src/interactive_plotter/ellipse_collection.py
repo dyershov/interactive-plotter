@@ -20,10 +20,21 @@ class EllipseCollection(InteractiveArtist):
 
 
 class TensorField(EllipseCollection):
-    def __init__(self, artist):
+    def __init__(self, artist, scale=1.0):
         super().__init__(artist)
+        self.__scale = scale
 
-    def plot(self, x=None, y=None, tensors=None, cvalues=None, **kwargs):
+    @property
+    def scale(self):
+        return self.__scale
+
+    @scale.setter
+    def scale(self, scale):
+        self.__scale = scale
+
+    def plot(self, x=None, y=None, tensors=None, cvalues=None, scale=None, **kwargs):
+        if scale is not None:
+            self.scale = scale
         if tensors is not None:
             widths, heights, angles = self.__tensors_to_wha(tensors)
         else:
@@ -38,8 +49,8 @@ class TensorField(EllipseCollection):
             d2 = np.sqrt(d1 * d1 + a12 * a12)
             d3 = 0.5 * (a22 + a11)
             angle = np.arctan2(d1 + d2, a12)
-            w = np.sqrt(d3 + d2)
-            h = np.sqrt(d3 - d2)
+            w = np.sqrt(d3 + d2) * self.__scale
+            h = np.sqrt(d3 - d2) * self.__scale
             return [w, h, angle]
         wha = np.array(list(map(tensor_to_wha, tensors)), dtype=np.float64)
         return wha[:,0], wha[:,1], wha[:,2]

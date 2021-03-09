@@ -153,7 +153,7 @@ class InteractiveAxes:
         kwargs["scale_units"] = "xy"
         return self.quiver(*args, **kwargs)
 
-    def tensor_field(self, x, y, tensors, cvalues=None, **kwargs):
+    def tensor_field(self, x, y, tensors=None, cvalues=None, scale=1.0, **kwargs):
         import numpy as np
         from interactive_plotter.interactive_artist import TensorField
         from matplotlib.collections import EllipseCollection as __EllipseCollection
@@ -164,7 +164,7 @@ class InteractiveAxes:
         kwargs["units"]="xy"
         artist = __EllipseCollection([0] * x.size, [0] * x.size, [0] * x.size, offsets=np.zeros((x.size, 2)), transOffset=self.__axes.transData, **kwargs)
         self.__axes.add_collection(artist)
-        interactive_artist = TensorField(artist)
+        interactive_artist = TensorField(artist, scale)
         interactive_artist.plot(x, y, tensors, cvalues)
         self.__add_foreground_artist(interactive_artist)
         return interactive_artist
