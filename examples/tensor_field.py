@@ -36,8 +36,9 @@ def main():
     iAx = iFig.get_interactive_axes()
     iSPD = iAx.tensor_field(x, y, tensors)
 
-    iAx.add_foreground_artist(iSPD)
-    iAx.axes.autoscale()
+    # iAx.add_foreground_artist(iSPD)
+    iAx.axes.set_xlim([-10, 10])
+    iAx.axes.set_ylim([-10, 10])
 
     iFig.render(pause=1)
     while True:
