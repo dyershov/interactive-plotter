@@ -15,6 +15,11 @@ class InteractiveAxes:
         from itertools import chain
         return all([artist.rendered for artist in chain(self.__background_artists, self.__foreground_artists)])
 
+    def clear(self):
+        self.__foreground_artists = set()
+        self.__background_artists = set()
+        self.__axes.clear()
+
     def render(self):
         from itertools import chain
         for artist in chain(self.__background_artists, self.__foreground_artists):
@@ -49,13 +54,19 @@ class InteractiveAxes:
     def add_foreground_artist(self, interactive_artist):
         from matplotlib.collections import Collection
         from matplotlib.container import Container
-        from matplotlib.collections import EllipseCollection
+        from matplotlib.collections import EllipseCollection, PathCollection, PolyCollection
         from matplotlib.image import AxesImage
         from matplotlib.lines import Line2D
         from matplotlib.patches import Patch
         if isinstance(interactive_artist.artist, Collection):
             if isinstance(interactive_artist.artist, EllipseCollection):
+#                interactive_artist.artist.set_transform(self.__axes.transData)
                 interactive_artist.artist._transOffset = self.__axes.transData
+            # if isinstance(interactive_artist.artist, PathCollection):
+            #     interactive_artist.artist._transOffset = self.__axes.transData
+            if isinstance(interactive_artist.artist, PolyCollection):
+                interactive_artist.artist.set_transform(self.__axes.transData)
+#                interactive_artist.artist._transOffset = self.__axes.transData
             self.__axes.add_collection(interactive_artist.artist)
         elif isinstance(interactive_artist.artist, Container):
             self.__axes.add_container(interactive_artist.artist)
@@ -124,9 +135,18 @@ class InteractiveAxes:
         return interactive_artist
 
     def scalar_field(self, *args, **kwargs):
+        if (len(args) == 2):
+            import numpy as np
+            args = (*args, np.zeros(shape=np.array(args[0].shape)-1))
         return self.pcolormesh(*args, **kwargs)
 
     def vector_field(self, *args, **kwargs):
+        if (len(args) == 2):
+            import numpy as np
+            args = (args[0], args[1], np.zeros(shape=args[0].shape), np.zeros(shape=args[0].shape))
+        if (len(args) == 3):
+            import numpy as np
+            args = (args[0], args[1], np.zeros(shape=args[0].shape), np.zeros(shape=args[0].shape), args[2])
         kwargs["angles"] = "xy"
         if "scale" not in kwargs:
             kwargs["scale"] = 1
