@@ -102,8 +102,12 @@ class InteractiveAxes:
             self.__add_foreground_artist(interactive_line2d)
         return interactive_line2d_list
 
-    def scatter(self, x, y, **kwargs):
+    def scatter(self, x=None, y=None, **kwargs):
         from interactive_plotter.interactive_artist import Scatter
+        if x is None or len(x) == 0:
+            x = [1.e+300]
+        if y is None or len(y) == 0:
+            y = [1.e+300]
         artist = self.axes.scatter(x, y, **kwargs)
         interactive_artist = Scatter(artist)
         self.__add_foreground_artist(interactive_artist)

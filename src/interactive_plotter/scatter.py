@@ -7,7 +7,10 @@ class Scatter(InteractiveArtist):
     def plot(self, x=None, y=None, **kwargs):
         import numpy as np
         if x is not None and y is not None:
-            self.artist.set_offsets(np.array([[_x,_y] for _x, _y in zip(x,y)]))
+            if len(x) is 0 or len(y) is 0:
+                self.artist.set_offsets(np.array([[1.e+300,1.e+300]]))
+            else:
+                self.artist.set_offsets(np.array([[_x,_y] for _x, _y in zip(x,y)]))
         if "cvalues" in kwargs:
             self.artist.set_array(kwargs["cvalues"])
         if "sizes" in kwargs:
