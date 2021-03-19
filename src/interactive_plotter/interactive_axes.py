@@ -22,7 +22,10 @@ class InteractiveAxes:
 
     def render(self):
         from itertools import chain
-        for artist in chain(self.__background_artists, self.__foreground_artists):
+        zorder_artist = [(ia.artist.get_zorder(), ia) for ia in chain(self.__background_artists,
+                                                                      self.__foreground_artists)]
+        zorder_artist.sort()
+        for _, artist in zorder_artist:
             artist.render()
 
     def move_to_background(self, artist):
