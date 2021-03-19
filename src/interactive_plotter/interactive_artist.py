@@ -22,6 +22,7 @@ class InteractiveArtist:
 from .ellipse_collection import *
 from .line2d import *
 from .line_collection import *
+from .poly_collection import *
 from .quad_mesh import *
 from .quiver import *
 from .scatter import *
