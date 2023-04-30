@@ -1,4 +1,4 @@
-__all__ = ["interactive_artist", "interactive_axes", "interactive_events", "interactive_figure"]
+__all__ = ["interactive_artist", "interactive_axes", "interactive_events", "interactive_figure", "ellipse_collection_plotter", "line_collection_plotter", "quiver_plotter", "quad_mesh_plotter"]
 
 
 from importlib import reload
